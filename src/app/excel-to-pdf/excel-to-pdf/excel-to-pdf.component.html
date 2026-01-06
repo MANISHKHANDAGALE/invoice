@@ -1,13 +1,61 @@
-<div class="min-h-screen flex items-center justify-center bg-slate-900">
-  <label
-    class="p-8 border-2 border-dashed border-gray-500 rounded-xl text-white cursor-pointer hover:border-emerald-400"
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800">
+
+  <div
+    class="w-full max-w-md rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl p-8 text-white"
   >
-    Upload Excel
-    <input
-      type="file"
-      accept=".xls,.xlsx"
-      class="hidden"
-      (change)="onExcelUpload($event)"
-    />
-  </label>
+    <!-- Title -->
+    <h2 class="text-2xl font-semibold text-center mb-6">
+      Invoice Generator
+    </h2>
+     <!-- Download Sample -->
+    <button
+      class="w-full mb-4 py-2 rounded-lg text-sm font-medium
+             border border-white/20 hover:border-emerald-400
+             hover:text-emerald-400 transition"
+      (click)="downloadSampleExcel()"
+    >
+      ⬇ Download Sample Excel
+    </button>
+    <!-- Upload Box -->
+    <label
+      class="group flex flex-col items-center justify-center gap-3 p-6 border-2 border-dashed rounded-xl cursor-pointer transition
+             border-white/20 hover:border-emerald-400 hover:bg-emerald-400/5"
+    >
+      <div
+        class="w-12 h-12 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-400 group-hover:scale-110 transition"
+      >
+        📄
+      </div>
+
+      <span class="text-sm text-gray-300">
+        Click to upload Excel (.xls / .xlsx)
+      </span>
+
+      <span
+        *ngIf="selectedFileName"
+        class="text-xs text-emerald-400 truncate max-w-full"
+      >
+        {{ selectedFileName }}
+      </span>
+
+      <input
+        type="file"
+        accept=".xls,.xlsx"
+        class="hidden"
+        (change)="onFileSelect($event)"
+      />
+    </label>
+
+    <!-- Action Button -->
+    <button
+      class="mt-6 w-full py-3 rounded-xl font-medium transition
+             bg-emerald-500 hover:bg-emerald-600
+             disabled:bg-gray-600 disabled:cursor-not-allowed"
+      [disabled]="!excelFile"
+      (click)="generatePdf()"
+    >
+      Generate & Download PDF
+    </button>
+  </div>
+
 </div>
