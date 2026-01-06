@@ -1,0 +1,13 @@
+<div class="min-h-screen flex items-center justify-center bg-slate-900">
+  <label
+    class="p-8 border-2 border-dashed border-gray-500 rounded-xl text-white cursor-pointer hover:border-emerald-400"
+  >
+    Upload Excel
+    <input
+      type="file"
+      accept=".xls,.xlsx"
+      class="hidden"
+      (change)="onExcelUpload($event)"
+    />
+  </label>
+</div>
