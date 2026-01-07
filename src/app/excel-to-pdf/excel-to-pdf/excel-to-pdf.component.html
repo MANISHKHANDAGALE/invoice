@@ -1,61 +1,140 @@
-<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-950 via-slate-900 to-slate-800">
-
+<div
+  class="min-h-screen bg-linear-to-br from-white via-gray-50 to-gray-100
+         flex items-center justify-center px-4"
+>
   <div
-    class="w-full max-w-md rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl p-8 text-white"
+    class="w-full max-w-xl rounded-2xl
+           bg-white
+           border border-gray-200 shadow-xl
+           overflow-hidden text-gray-900"
   >
-    <!-- Title -->
-    <h2 class="text-2xl font-semibold text-center mb-6">
-      Invoice Generator
-    </h2>
-     <!-- Download Sample -->
-    <button
-      class="w-full mb-4 py-2 rounded-lg text-sm font-medium
-             border border-white/20 hover:border-emerald-400
-             hover:text-emerald-400 transition"
-      (click)="downloadSampleExcel()"
-    >
-      ⬇ Download Sample Excel
-    </button>
-    <!-- Upload Box -->
-    <label
-      class="group flex flex-col items-center justify-center gap-3 p-6 border-2 border-dashed rounded-xl cursor-pointer transition
-             border-white/20 hover:border-emerald-400 hover:bg-emerald-400/5"
-    >
-      <div
-        class="w-12 h-12 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-400 group-hover:scale-110 transition"
+    <!-- Header -->
+    <div class="flex items-center gap-4 px-6 py-4 border-b border-gray-200 bg-gray-50">
+      <img
+        src="assets/fav.png"
+        alt="Company Logo"
+        class="h-12 w-12 object-contain"
+      />
+
+      <div>
+        <h1 class="text-lg font-semibold text-gray-900">
+          Invoice Generator
+        </h1>
+        <p class="text-sm text-gray-500">
+          Upload Excel and generate a print-ready PDF
+        </p>
+      </div>
+    </div>
+
+    <!-- Body -->
+    <div class="p-6 space-y-6">
+      <!-- Download Sample -->
+      <button
+        class="w-full py-2 rounded-lg text-sm font-medium
+               border border-red-300 text-red-600
+               hover:bg-red-50 hover:border-red-500
+               transition"
+        (click)="downloadSampleExcel()"
       >
-        📄
+        ⬇ Download Sample Excel
+      </button>
+
+      <!-- Upload Box -->
+      <label
+        class="flex flex-col items-center justify-center gap-3 p-6
+               border-2 border-dashed rounded-xl cursor-pointer transition
+               border-red-300 hover:border-red-500 hover:bg-red-50"
+      >
+        <div
+          class="w-12 h-12 rounded-full bg-red-100
+                 flex items-center justify-center text-red-600"
+        >
+         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="red" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-file-text-icon lucide-file-text"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5"/><path d="M10 9H8"/><path d="M16 13H8"/><path d="M16 17H8"/></svg>
+        </div>
+
+        <div class="text-center">
+          <p class="text-sm font-medium text-gray-800">
+            Upload Excel Invoice
+          </p>
+          <p class="text-xs text-gray-500">
+            Supported formats: .xls, .xlsx
+          </p>
+        </div>
+
+        <input
+          type="file"
+          accept=".xls,.xlsx"
+          class="hidden"
+          (change)="onFileSelect($event)"
+          [disabled]="loading"
+        />
+      </label>
+
+      <!-- Selected File -->
+      <div
+        *ngIf="selectedFileName"
+        class="flex items-center justify-between
+               bg-gray-50 border border-gray-200
+               rounded-lg px-4 py-2 text-sm"
+      >
+        <span class="truncate text-gray-800">
+          {{ selectedFileName }}
+        </span>
+        <span class="text-red-600 font-medium">
+          Ready
+        </span>
       </div>
 
-      <span class="text-sm text-gray-300">
-        Click to upload Excel (.xls / .xlsx)
-      </span>
-
-      <span
-        *ngIf="selectedFileName"
-        class="text-xs text-emerald-400 truncate max-w-full"
+      <!-- Generate Button -->
+      <button
+        class="w-full flex cursor-pointer items-center justify-center gap-2
+               rounded-xl py-3 font-medium transition
+               bg-red-500 text-white
+               hover:bg-red-600
+               disabled:bg-gray-300 disabled:text-gray-500
+               disabled:cursor-not-allowed"
+        [disabled]="!excelFile || loading"
+        (click)="generatePdf()"
       >
-        {{ selectedFileName }}
-      </span>
+        <svg
+          *ngIf="loading"
+          class="h-5 w-5 animate-spin"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+        >
+          <circle cx="12" cy="12" r="10" class="opacity-25" />
+          <path
+            class="opacity-75"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M4 12a8 8 0 018-8"
+          />
+        </svg>
 
-      <input
-        type="file"
-        accept=".xls,.xlsx"
-        class="hidden"
-        (change)="onFileSelect($event)"
-      />
-    </label>
+        {{ loading ? 'Generating Invoice…' : 'Generate PDF Invoice' }}
+      </button>
 
-    <!-- Action Button -->
-    <button
-      class="mt-6 w-full py-3 rounded-xl font-medium transition
-             bg-emerald-500 hover:bg-emerald-600
-             disabled:bg-gray-600 disabled:cursor-not-allowed"
-      [disabled]="!excelFile"
-      (click)="generatePdf()"
+      <!-- Download Button -->
+      <!-- <button
+        class="w-full rounded-xl py-3 font-medium transition
+               bg-red-600 text-white
+               hover:bg-red-700"
+        (click)="generatePdf()"
+      >
+        Download Invoice PDF
+      </button> -->
+    </div>
+
+    <!-- Footer -->
+    <div
+      class="border-t border-gray-200 bg-gray-50
+             px-6 py-3 text-xs text-gray-500
+             flex items-center justify-between"
     >
-      Generate & Download PDF
-    </button>
+      <span> <span class="text-black font-bold text-[12.5px]">©</span> {{ currentYear }} <span class="text-red-500 font-bold">CWD LIMITED</span> </span>
+      <span>Secure • Internal Use Only</span>
+    </div>
   </div>
-
 </div>
