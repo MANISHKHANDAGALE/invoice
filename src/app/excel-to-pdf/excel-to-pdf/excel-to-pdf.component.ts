@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import * as XLSX from 'xlsx';
 import { PDFDocument, rgb, StandardFonts, PDFFont } from 'pdf-lib';
 import { CommonModule } from '@angular/common';
 import JSZip from 'jszip';
+import { ToasterService } from '../../services/toaster.service';
+
 
 type FieldConfig = {
   x: number;
@@ -20,6 +22,9 @@ type FieldConfig = {
   templateUrl: './excel-to-pdf.component.html',
 })
 export class ExcelToPdfComponent {
+
+  toaster = inject(ToasterService);
+
   currentYear = new Date().getFullYear();
   loading = false;
   excelFile: File | null = null;
@@ -30,10 +35,14 @@ export class ExcelToPdfComponent {
   ========================== */
   onFileSelect(event: Event) {
     const input = event.target as HTMLInputElement;
-    if (!input.files?.length) return;
-
+    if (!input.files?.length) {
+    this.toaster.error('No file selected');
+    return;
+  }
     this.excelFile = input.files[0];
     this.selectedFileName = this.excelFile.name;
+
+    this.toaster.success('Excel file selected successfully');
   }
 
   downloadSampleExcel() {
@@ -109,7 +118,10 @@ export class ExcelToPdfComponent {
      MAIN PDF GENERATOR
   ========================== */
   async generatePdf() {
-    if (!this.excelFile) return;
+    if (!this.excelFile)  {
+    this.toaster.error('Please select an Excel file first');
+    return;
+  }
     this.loading = true;
 
     const buffer = await this.excelFile.arrayBuffer();
@@ -119,6 +131,7 @@ export class ExcelToPdfComponent {
 
     if (!rows.length) {
       this.loading = false;
+      this.toaster.error('Excel file has no data');
       return;
     }
 
@@ -155,6 +168,8 @@ export class ExcelToPdfComponent {
     a.href = url;
     a.download = 'Invoices.zip';
     a.click();
+
+    this.toaster.success('Invoices generated and downloaded successfully');
 
     URL.revokeObjectURL(url);
     this.loading = false;

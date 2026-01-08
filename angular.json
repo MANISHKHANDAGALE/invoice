@@ -25,6 +25,7 @@
               "src/assets"
             ],
             "styles": [
+              "@ngxpert/hot-toast/styles.css",
               "src/styles.css"
             ],
             "scripts": []
@@ -83,6 +84,7 @@
               }
             ],
             "styles": [
+              "@ngxpert/hot-toast/styles.css",
               "src/styles.css"
             ],
             "scripts": []
@@ -90,5 +92,8 @@
         }
       }
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }
