@@ -1,0 +1,45 @@
+/* Background Orbs */
+.bg-orb {
+  position: absolute;
+  width: 420px;
+  height: 420px;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: 0.35;
+  animation: float 18s ease-in-out infinite;
+}
+
+/* Individual orb colors & positions */
+.orb-red {
+  background: #ef4444; /* Tailwind red-500 */
+  top: -120px;
+  left: -120px;
+  animation-delay: 0s;
+}
+
+.orb-gray {
+  background: #9ca3af; /* gray-400 */
+  bottom: -140px;
+  right: -140px;
+  animation-delay: 6s;
+}
+
+.orb-light {
+  background: #fecaca; /* red-200 */
+  top: 40%;
+  left: 60%;
+  animation-delay: 12s;
+}
+
+/* Floating animation */
+@keyframes float {
+  0% {
+    transform: translateY(0) translateX(0) scale(1);
+  }
+  50% {
+    transform: translateY(-40px) translateX(30px) scale(1.05);
+  }
+  100% {
+    transform: translateY(0) translateX(0) scale(1);
+  }
+}
