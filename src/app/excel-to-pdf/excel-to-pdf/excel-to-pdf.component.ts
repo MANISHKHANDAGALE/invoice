@@ -128,6 +128,9 @@ export class ExcelToPdfComponent {
     const workbook = XLSX.read(buffer, { type: 'array' });
     const sheet = workbook.Sheets[workbook.SheetNames[0]];
     const rows: any[] = XLSX.utils.sheet_to_json(sheet);
+    // console.log("workbook:",workbook)
+    // console.log("sheets:",sheet)
+    // console.log("rows:",rows);
 
     if (!rows.length) {
       this.loading = false;
